@@ -35,8 +35,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDTO> getMoviesByGenre(String genre) {
-        List<Movie> movieList = movieRepository.findByGenre(genre)
-                .orElseThrow(()-> new ResourceNotFoundException("No movies found for genre: "+genre));
+        List<Movie> movieList = movieRepository.findByGenre(genre);
+        if(movieList.isEmpty())
+            throw new ResourceNotFoundException("No movies found for genre: "+genre);
         return movieList.stream().map(Mapper::getDTO_From_Movie).toList();
     }
 
@@ -45,27 +46,33 @@ public class MovieServiceImpl implements MovieService {
         if(language == null || language.isEmpty()){
             return getAllMovies();
         }
-        List<Movie> movieList = movieRepository.findByLanguages(language)
-                    .orElseThrow(() -> new ResourceNotFoundException("No movies found for this languages: "+language));
-
+        List<Movie> movieList = movieRepository.findByLanguages(language);
+        if(movieList.isEmpty())
+            throw new ResourceNotFoundException("No movies found for this languages: "+language);
         return movieList.stream().map(Mapper::getDTO_From_Movie).toList();
     }
 
     @Override
     public MovieDTO getMovieByTitle(String title) {
         Movie movie = movieRepository.findMovieByTitle(title)
-                .orElseThrow(()-> new ResourceNotFoundException(""));
+                .orElseThrow(()-> new ResourceNotFoundException("No movie is found for this title: "+title));
 
         return Mapper.getDTO_From_Movie(movie);
     }
 
     @Override
     public MovieDTO updateMovie(Long id, MovieDTO movieDTO) {
-        return null;
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("NO movie found for the id: "+id));
+        movie = Mapper.getMovie_From_DTO(movieDTO);
+        movieRepository.save(movie);
+        return Mapper.getDTO_From_Movie(movie);
     }
 
     @Override
     public void deleteMovie(Long id) {
-
+        if(!movieRepository.existsById(id))
+            throw new ResourceNotFoundException("No movie found for the id: "+id);
+        movieRepository.deleteById(id);
     }
 }

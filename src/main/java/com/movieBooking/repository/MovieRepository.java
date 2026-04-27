@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
-    Optional<List<Movie>> findByGenre(String genre);
-    Optional<List<Movie>> findByLanguages(Set<String> languages);
+    List<Movie> findByGenre(String genre);
+    List<Movie> findByLanguages(Set<String> languages);
     Optional<Movie> findMovieByTitle(String title);
 }
