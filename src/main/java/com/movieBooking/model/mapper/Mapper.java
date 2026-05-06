@@ -1,8 +1,10 @@
 package com.movieBooking.model.mapper;
 
 import com.movieBooking.model.dto.MovieDTO;
+import com.movieBooking.model.dto.ShowDTO;
 import com.movieBooking.model.dto.TheaterDTO;
 import com.movieBooking.model.entity.Movie;
+import com.movieBooking.model.entity.Show;
 import com.movieBooking.model.entity.Theater;
 
 public class Mapper {
@@ -46,5 +48,23 @@ public class Mapper {
         theater.setLocation(theaterDTO.getLocation());
         theater.setScreenType(theaterDTO.getScreenType());
         return theater;
+    }
+
+    public static Show getShow_From_DTO(ShowDTO showDTO){
+        Show show = new Show();
+        show.setId(showDTO.getId());
+        show.setShowTime(showDTO.getShowTime());
+        show.setPrice(showDTO.getPrice());
+        return show;
+    }
+
+    public static ShowDTO getDTO_From_Show(Show show){
+        ShowDTO showDTO = new ShowDTO();
+        showDTO.setId(show.getId());
+        showDTO.setShowTime(show.getShowTime());
+        showDTO.setPrice(show.getPrice());
+        showDTO.setMovie(show.getMovie());
+        showDTO.setTheater(show.getTheater());
+        return showDTO;
     }
 }

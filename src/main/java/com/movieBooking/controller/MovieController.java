@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/movies")
+@RequestMapping("/api/movie")
 @RequiredArgsConstructor
 public class MovieController {
 
@@ -25,7 +25,7 @@ public class MovieController {
         return new ResponseEntity<>(createdMovie, HttpStatus.CREATED);
     }
 
-    @GetMapping("/list/all")
+    @GetMapping("/list")
     public ResponseEntity<?> getAllMovies(){
         List<MovieDTO> allMovies = movieService.getAllMovies();
         return new ResponseEntity<>(allMovies, HttpStatus.OK);
